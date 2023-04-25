@@ -32,7 +32,7 @@ const {
   addToList,
 } = require("./functions");
 
-module.exports.handler = async (event) => {
+function handler(event) {
   const { request, session, version, meta, state } = event;
   let response = {};
   const stateSession = state && state.session;
@@ -262,3 +262,17 @@ module.exports.handler = async (event) => {
       return { version, session, response };
     });
 };
+
+const express = require('express')
+const app = express()
+const port = 3000
+
+app.use(express.json())
+
+app.post('/', (req, res) => {
+  res.json(handler(req.body))
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
